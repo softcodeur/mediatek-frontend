@@ -1,0 +1,89 @@
+<div class="container custom-container" width="200px">
+<table class="table table-hover">
+  <thead class="thead-light">
+    <th>#Ref facture.</th>
+    <th>Client</th>
+     <th>Date</th>
+    <th>Mode Payement</th>
+    <th>Total à Payer</th>
+    <th>
+      <a class="btn btn-outline-success" routerLink="/facture"><i class="fa fa-plus-square"></i> Ajouter une commande</a>
+    </th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of orderList">
+      <th (click)="openForEdit(item.numero)">{{ item.ref }}</th>
+      <td>{{ item.client.nom }} {{ item.client.prenom }}</td>
+      <td>{{ item.date_fact| date:'dd/MM/yyyy' }}</td>
+      <td>{{ item.methodP }}</td>
+      <td>{{ item.gtotal }}</td>
+      <td >
+       <a class="btn btn-warning custom-btn-link " style="margin-right: 5px;"  (click)="editOrderRequest(item)">  <em class="  text-white  glyphicon glyphicon-pencil"></em> </a>
+
+        <a class="btn btn-danger custom-btn-link" style="margin-right: 5px;" (click)="onOrderDelete(item)"><em class=" text-white glyphicon glyphicon-trash"></em></a>
+
+         <a class="btn btn-secondary custom-btn-link"  (click)="onDownload(item)"><em class=" text-white glyphicon glyphicon-download-alt"></em></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+<div class="modal fade" id="orderModal" #orderModal tabIndex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form name="form-order-update" (ngSubmit)="f.form.valid && editOrder()" #f="ngForm" novalidate>
+        <div class="modal-header">
+          <h5 class="modal-title">Facture...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger" *ngIf="errorMessage">
+            <strong>Erreur!</strong> {{errorMessage}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !nom.valid }">
+            <label for="nom">Nom:</label>
+            <input type="text" class="form-control input-text-custom" id="nom" name="nom" [(ngModel)]="selectedFacture.client.nom"
+            #nom="ngModel" required />
+            <div *ngIf="f.submitted && !nom.valid" class="help-block">Entrez un nom valide.</div>
+          </div>
+
+           <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !prenom.valid }">
+            <label for="prenom">Prenom:</label>
+            <input type="text" class="form-control input-text-custom" id="prenom" name="prenom" [(ngModel)]="selectedFacture.client.prenom" #prenom="ngModel" required />
+            <div *ngIf="f.submitted && !prenom.valid" class="help-block">Entrez un prenom valide.</div>
+          </div>
+
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !gTotal.valid }">
+            <label for="gTotal">Total de la Facture:</label>
+            <input type="number" class="form-control input-text-custom" id="gTotal" name="gTotal" [(ngModel)]="selectedFacture.gtotal" #gTotal="ngModel" required />
+            <div *ngIf="f.submitted && !gTotal.valid" class="help-block">Total  requis.</div>
+          </div>
+
+          <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !methodP.valid }">
+            <label for="methodP">Mode de Payement:</label>
+            <select class="form-control" name="methodP" id="methodP" required [(ngModel)]="selectedFacture.methodP" #methodP="ngModel">
+              <option value="Carte">CARTE</option>
+              <option value="Cash">CASH</option>
+            </select>
+            <div *ngIf="f.submitted && !methodP.valid" class="help-block">Selectionner une méthode.</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+

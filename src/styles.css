@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~bootstrap/dist/css/bootstrap.css";
+
+.custom-container {
+  margin-left: 100px;
+  margin-top: 60px;
+  width: calc(100% - 100px);
+}
+table {
+  width: 100%;
+}
+
+
+.jumbotron{
+    padding-top: 0px;
+    background: #fff;
+}
+
+.form-control,.input-group-text{
+    border: 1px solid #0080ff;
+}
+
+table.table-hover tbody tr:hover{
+    cursor: pointer;
+}
+

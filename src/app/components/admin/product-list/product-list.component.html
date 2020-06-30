@@ -1,0 +1,137 @@
+<div class="container custom-container">
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    <strong>Erreur!</strong> {{errorMessage}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="alert alert-success" *ngIf="infoMessage">
+    <strong>Succès!</strong> {{infoMessage}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div *ngIf="dataSource">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col col-xs-6">
+            <h3 class="panel-title">Liste des Produits</h3>
+          </div>
+          <div class="col col-xs-6 text-right">
+            <button type="button" class="btn btn-primary" (click)="createNewProductRequest()">Ajouter Un Produit</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <mat-form-field>
+        <mat-label>Chercher</mat-label>
+       <input matInput (keyup)="applyFilter($event)" placeholder="Ex. lait">
+       </mat-form-field>
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="numero">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Numéro</th>
+            <td mat-cell *matCellDef="let element">{{element.num_prod}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="libelle">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Libelle</th>
+            <td mat-cell *matCellDef="let element">{{element.libelle}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="prix">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Prix</th>
+            <td mat-cell *matCellDef="let element">{{element.prix}}</td>
+          </ng-container>
+
+           <ng-container matColumnDef="stock">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+            <td mat-cell *matCellDef="let element">{{element.stock}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+            <td mat-cell *matCellDef="let element" style="width:140px;">
+              <a class="btn btn-warning custom-btn-link" (click)="editProductRequest(element)"><em class="glyphicon glyphicon-pencil"></em></a>
+              <a class="btn btn-danger custom-btn-link" (click)="deleteProductRequest(element)"><em class="glyphicon glyphicon-trash"></em></a>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="productModal" #productModal tabIndex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form name="form-product-update" (ngSubmit)="f.form.valid && saveProduct()" #f="ngForm" novalidate>
+        <div class="modal-header">
+          <h5 class="modal-title">Information sur le Produit</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger" *ngIf="errorMessage">
+            <strong>Erreur!</strong> {{errorMessage}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !libelle.valid }">
+            <label for="libelle">Libelle</label>
+            <input type="text" class="form-control input-text-custom" id="libelle" name="libelle" [(ngModel)]="selectedProduct.libelle" #libelle="ngModel" required />
+            <div *ngIf="f.submitted && !libelle.valid" class="help-block">Libelle requis.</div>
+          </div>
+          <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !prix.valid }">
+            <label for="prix">Prix</label>
+            <input type="number" class="form-control input-text-custom" id="prix" name="prix" [(ngModel)]="selectedProduct.prix" #prix="ngModel" required />
+            <div *ngIf="f.submitted && !prix.valid" class="help-block">Prix  requis.</div>
+          </div>
+           
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !stock.valid }">
+            <label for="stock">Stock</label>
+            <input type="number" class="form-control input-text-custom" id="stock" name="stock" [(ngModel)]="selectedProduct.stock" #stock="ngModel" required />
+            <div *ngIf="f.submitted && !stock.valid" class="help-block">stock requis.</div>
+          </div>
+
+         <!-- <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !explanation.valid }">
+            <label for="explanation">Explanation</label>
+            <textarea class="form-control" name="explanation" rows="8" id="explanation" required [(ngModel)]="selectedProduct.explanation" #explanation="ngModel" maxlength="1000"></textarea>
+            <div *ngIf="f.submitted && !explanation.valid" class="help-block">Explanation is required.</div>
+          </div>-->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deleteModal" #deleteModal tabIndex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          Voulez-vous Suppimer <strong>{{selectedProduct.libelle}}</strong>?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-danger" (click)="deleteProduct()">Supprimer</button>
+        </div>
+    </div>
+  </div>
+</div>

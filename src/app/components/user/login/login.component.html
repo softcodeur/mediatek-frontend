@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="card card-container">
+     <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+
+      <form name="form-signin" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+        <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+        <label for="username">Login:</label>
+        <input type="text" class="form-control input-text-custom" id="username" name="username" [(ngModel)]="user.login" #username="ngModel" required />
+        <div *ngIf="f.submitted && !username.valid" class="help-block">Entrez un login valide.</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+        <label for="password">Mot de Passe:</label>
+        <input type="password" class="form-control input-text-custom" id="password" name="password" [(ngModel)]="user.password" #password="ngModel" required />
+        <div *ngIf="f.submitted && !password.valid" class="help-block">Entrez un mot de passe valide.</div>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block btn-signin form-submit-button" type="submit">Connnexion</button>
+    </form><!-- /form -->
+      <a [routerLink]="['/register']" class="btn btn-link">Créer un Compte!</a>
+  </div><!-- /card-container -->
+</div><!-- /container -->

@@ -1,0 +1,109 @@
+<div class="container" >
+<form #form="ngForm" autocomplete="off" *ngIf="service.formData" (submit)="onSubmit(form)">
+  <input type="hidden" name="OrderID"
+  #OrderID="ngModel"
+  [(ngModel)]="service.formData.numero"
+  class="form-control">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-gruop">
+        <label>Ref Facture:</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">#</div>
+          </div>
+
+        <input
+          name="OrderNo"
+          #OrderNo="ngModel"
+          [(ngModel)]="service.formData.ref"
+          class="form-control" readonly
+        />
+      </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-gruop">
+        <label>Client Facture:</label>
+        <select
+          name="CustomerID"
+          #CustomerID="ngModel"
+          [(ngModel)]="service.formData.client.id"
+          class="form-control"
+          [class.is-invalid]="!isValid && service.formData.client.id==0"
+        >
+          <option value="">-Selectionner-</option>
+          <option *ngFor="let item of customerList" value="{{item.id}}">{{item.nom}} {{item.prenom}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-gruop">
+        <label>Methode Payement:</label>
+        <select
+          name="PMethod"
+          #PMethod="ngModel"
+          [(ngModel)]="service.formData.methodP"
+          class="form-control"
+        >
+          <option value="">-Selectionner-</option>
+          <option value="Cash">CASH</option>
+          <option value="Carte">CARTE</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-gruop">
+        <label>Total à Payer:</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">DHS</div>
+          </div>
+
+        <input
+          name="GTotal"
+          #GTotal="ngModel"
+          [(ngModel)]="service.formData.gTotal"
+          class="form-control" readonly
+        />
+      </div>
+     </div>
+    </div>
+  </div>
+  <!-- order items table-->
+  <table class="table table-borderless table-hover table-striped mt-3">
+    <thead class="thead-light">
+      <th>Libelle</th>
+      <th>Prix</th>
+      <th>Quantite</th>
+      <th>Total</th>
+      <th>
+        <a class="btn btn-sm btn-success text-white" (click)="AddOrEditOrderItem(null,service.formData.numero)"><i class="fa fa-plus"></i> Ajouter un Produit</a>
+      </th>
+    </thead>
+    <tbody>
+      <tr *ngIf="service.orderItems.length==0" [class.text-danger]="!isValid && service.orderItems.length==0">
+        <td class="font-italic text-center" colspan="5">
+          Aucun produit n'à été selectionné pour cette facture.
+        </td>
+      </tr>
+      <tr *ngFor="let item of service.orderItems;let i=index;">
+        <td>{{ item.produit.libelle}}</td>
+        <td>{{ item.produit.prix }}</td>
+        <td>{{ item.quantite }}</td>
+        <td>{{ item.total }}</td>
+        <td>
+            <a class="btn btn-sm btn-info text-white"  style="margin-right: 5px;" (click)="AddOrEditOrderItem(i,service.formData.numero)"><em class=" glyphicon glyphicon-pencil"></em></a>
+            <a class="btn btn-sm btn-danger text-white" (click)="onDeleteEditOrderItem(item.produit.num_prod,i)"><em class="glyphicon glyphicon-trash"></em></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="form-group">
+    <button type="submit" class="btn text-white" style="background-color: #0b0514">
+      <i class="fa fa-database"></i> Sauvegarder
+    </button>
+    <a class="btn btn-outline-dark ml-1" routerLink="/orders"><i class="fa fa-table"></i> Liste des factures</a>
+  </div>
+</form>
+</div>

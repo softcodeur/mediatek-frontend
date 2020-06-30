@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="card card-container">
+     <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+
+      <form name="form-signup" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+        <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !nom.valid }">
+          <label for="nom">Nom:</label>
+          <input type="text" class="form-control input-text-custom" id="nom" name="nom" [(ngModel)]="user.nom" #nom="ngModel" required />
+          <div *ngIf="f.submitted && !nom.valid" class="help-block">Entrez un nom valide.</div>
+        </div>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !prenom.valid }">
+          <label for="prenom">Prenom:</label>
+          <input type="text" class="form-control input-text-custom" id="prenom" name="prenom" [(ngModel)]="user.prenom" #prenom="ngModel" required />
+          <div *ngIf="f.submitted && !prenom.valid" class="help-block">Entrez un prenom valide.</div>
+        </div>
+      
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !adresse.valid }">
+          <label for="adresse">Adresse:</label>
+          <input type="text" class="form-control input-text-custom" id="adresse" name="adresse" [(ngModel)]="user.adresse" #adresse="ngModel" required />
+          <div *ngIf="f.submitted && !adresse.valid" class="help-block">Entrez une adresse valide.</div>
+        </div>
+          <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !telp.valid }">
+          <label for="telp">Tel:</label>
+          <input type="text" class="form-control input-text-custom" id="telp" name="telp" [(ngModel)]="user.tel" #telp="ngModel" required />
+          <div *ngIf="f.submitted && !telp.valid" class="help-block">Entrez un numero de téléphone valide.</div>
+        </div>
+        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+        <label for="username">Login:</label>
+        <input type="text" class="form-control input-text-custom" id="username" name="username" [(ngModel)]="user.login" #username="ngModel" required />
+        <div *ngIf="f.submitted && !username.valid" class="help-block">Entrez un login valide.</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+        <label for="password">Mot de Passe:</label>
+        <input type="password" class="form-control input-text-custom" id="password" name="password" [(ngModel)]="user.password" #password="ngModel" required />
+        <div *ngIf="f.submitted && !password.valid" class="help-block">Entrez un mot de passe valide.</div>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block btn-signin form-submit-button" type="submit">Inscription</button>
+    </form><!-- /form -->
+      <a [routerLink]="['/login']" class="btn btn-link">Vous avez un Compte!</a>
+  </div><!-- /card-container -->
+</div><!-- /container -->

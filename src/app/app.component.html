@@ -1,0 +1,20 @@
+<app-admin-template *ngIf="isAdminPanel"></app-admin-template>
+
+<app-user-template *ngIf="!isAdminPanel" ></app-user-template>
+
+ 
+<div class="mt-5"> 
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 offset-md-1">
+      	 <ngx-spinner color="#fff"
+          type="ball-clip-rotate"
+      	 >
+      	 	<p style="color: white" > Chargement... </p>
+      	 </ngx-spinner>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+
